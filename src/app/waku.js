@@ -11,9 +11,11 @@ export const useWaku = () => {
 
     useEffect(() => {
         const main = async () => {
-            const node = await createLightNode({ defaultBootstrap: true });
+            const node = await createLightNode({ defaultBootstrap: false });
             await node.start();
+            await node.dial("/ip4/3.79.137.0/tcp/60000/p2p/16Uiu2HAkz5BKvaRjg2RuVe3CnRZxAgJNLosAZWbPrSdafuJgNcme");
             await waitForRemotePeer(node);
+            console.log('Connected to peer');
 
             const contentTopic = "/light-guide/1/message/proto";
             const encoder = createEncoder({ contentTopic });
