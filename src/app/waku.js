@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { createLightNode, waitForRemotePeer, createEncoder, createDecoder } from "@waku/sdk";
 import protobuf from "protobufjs";
+import {multiaddr} from "@multiformats/multiaddr";
 
 export const useWaku = () => {
     const [node, setNode] = useState(null);
@@ -13,7 +14,10 @@ export const useWaku = () => {
         const main = async () => {
             const node = await createLightNode({ defaultBootstrap: false });
             await node.start();
-            await node.dial("/ip4/3.79.137.0/tcp/60000/p2p/16Uiu2HAkz5BKvaRjg2RuVe3CnRZxAgJNLosAZWbPrSdafuJgNcme");
+            const ma = multiaddr("/ip4/3.79.137.0/tcp/8000/ws/p2p/16Uiu2HAkz5BKvaRjg2RuVe3CnRZxAgJNLosAZWbPrSdafuJgNcme")
+            console.log(ma)
+            await node.dial(ma);
+            console.log('Node started.');
             await waitForRemotePeer(node);
             console.log('Connected to peer');
 
